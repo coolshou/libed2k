@@ -93,7 +93,7 @@ inline tss_libed2k_pods* get_libed2k_pods()
 
     if (libed2k_pods == 0)
     {
-        std::auto_ptr<tss_libed2k_pods> temp( new_object_ensure_delete<tss_libed2k_pods>() );
+        std::unique_ptr<tss_libed2k_pods> temp( new_object_ensure_delete<tss_libed2k_pods>() );
         // pre-allocate a few elems, so that we'll be fast
         temp->resize(BOOST_LOG_TSS_SLOTS_SIZE);
 

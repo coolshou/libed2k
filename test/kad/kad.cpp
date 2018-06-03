@@ -51,7 +51,7 @@ std::deque<dht_keyword> dht_keywords;
 void alerts_reader(const boost::system::error_code& ec, boost::asio::deadline_timer* pt, libed2k::session* ps)
 {
     if (ec == boost::asio::error::operation_aborted) return;
-    std::auto_ptr<alert> a = ps->pop_alert();
+    std::unique_ptr<alert> a = ps->pop_alert();
     while (a.get())
     {
         if (dynamic_cast<server_connection_initialized_alert*>(a.get()))

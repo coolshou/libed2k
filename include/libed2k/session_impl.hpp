@@ -99,7 +99,7 @@ namespace libed2k {
             virtual std::vector<transfer_handle> get_transfers() = 0;
 
             /** alerts */
-            std::auto_ptr<alert> pop_alert();
+            std::unique_ptr<alert> pop_alert();
             void set_alert_mask(boost::uint32_t m);
             size_t set_alert_queue_size_limit(size_t queue_size_limit_);
             void set_alert_dispatch(boost::function<void(alert const&)> const&);

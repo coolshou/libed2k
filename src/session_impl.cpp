@@ -96,14 +96,14 @@ size_t session_impl_base::set_alert_queue_size_limit(size_t queue_size_limit_)
     return m_alerts.set_alert_queue_size_limit(queue_size_limit_);
 }
 
-std::auto_ptr<alert> session_impl_base::pop_alert()
+std::unique_ptr<alert> session_impl_base::pop_alert()
 {
     if (m_alerts.pending())
     {
         return m_alerts.get();
     }
 
-    return std::auto_ptr<alert>(0);
+    return std::unique_ptr<alert>(0);
 }
 
 void session_impl_base::set_alert_dispatch(boost::function<void(alert const&)> const& fun)

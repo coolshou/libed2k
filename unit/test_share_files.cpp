@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(test_concurrency)
     for (size_t n = 0; n < TCOUNT; ++n)
     {
         BOOST_REQUIRE(sit.m_alerts.wait_for_alert(libed2k::milliseconds(10)));
-        std::auto_ptr<libed2k::alert> a = sit.m_alerts.get();
+        std::unique_ptr<libed2k::alert> a = sit.m_alerts.get();
         BOOST_REQUIRE(dynamic_cast<libed2k::transfer_params_alert*>(a.get()));
         BOOST_CHECK_EQUAL((dynamic_cast<libed2k::transfer_params_alert*>(a.get()))->m_ec, libed2k::test_transfer_params_maker::m_errors[n]);
         BOOST_CHECK_EQUAL((dynamic_cast<libed2k::transfer_params_alert*>(a.get()))->m_atp.file_path, std::string(names[n]));
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(test_add_transfer_params_maker)
         std::stringstream s;
         s << filename << n;
         BOOST_REQUIRE(sit.m_alerts.wait_for_alert(libed2k::milliseconds(10)));
-        std::auto_ptr<libed2k::alert> aptr = sit.m_alerts.get();
+        std::unique_ptr<libed2k::alert> aptr = sit.m_alerts.get();
         libed2k::transfer_params_alert* a = dynamic_cast<libed2k::transfer_params_alert*>(aptr.get());
         BOOST_REQUIRE(a);
         BOOST_CHECK(!a->m_ec);
@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(test_add_transfer_params_maker)
     sit.m_tpm.stop();
 
     BOOST_REQUIRE(sit.m_alerts.wait_for_alert(libed2k::milliseconds(10)));
-    std::auto_ptr<libed2k::alert> aptr = sit.m_alerts.get();
+    std::unique_ptr<libed2k::alert> aptr = sit.m_alerts.get();
     libed2k::transfer_params_alert* a = dynamic_cast<libed2k::transfer_params_alert*>(aptr.get());
     BOOST_REQUIRE(a);
     BOOST_CHECK_EQUAL(a->m_ec, libed2k::errors::make_error_code(libed2k::errors::filesize_is_zero));
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(test_add_transfer_params_maker)
     while (sit.m_alerts.wait_for_alert(libed2k::milliseconds(10)))
     {
         ++iters;
-        std::auto_ptr<libed2k::alert> a = sit.m_alerts.get();
+        std::unique_ptr<libed2k::alert> a = sit.m_alerts.get();
         libed2k::transfer_params_alert* aptr = dynamic_cast<libed2k::transfer_params_alert*>(a.get());
         BOOST_REQUIRE(aptr);
         BOOST_CHECK(!aptr->m_ec || (aptr->m_ec == libed2k::errors::make_error_code(libed2k::errors::file_params_making_was_cancelled)));
@@ -308,7 +308,7 @@ BOOST_AUTO_TEST_CASE(test_add_transfer_params_maker)
     while (sit.m_alerts.wait_for_alert(libed2k::milliseconds(10)))
     {
         ++iters;
-        std::auto_ptr<libed2k::alert> a = sit.m_alerts.get();
+        std::unique_ptr<libed2k::alert> a = sit.m_alerts.get();
         libed2k::transfer_params_alert* aptr = dynamic_cast<libed2k::transfer_params_alert*>(a.get());
         BOOST_REQUIRE(aptr);
         BOOST_CHECK(!aptr->m_ec || (aptr->m_ec == libed2k::errors::make_error_code(libed2k::errors::file_params_making_was_cancelled)));
@@ -336,7 +336,7 @@ BOOST_AUTO_TEST_CASE(test_cancel_filename_in_progress)
     // 3. cancel hasher
 
     BOOST_REQUIRE(sit.m_alerts.wait_for_alert(libed2k::milliseconds(10)));
-    std::auto_ptr<libed2k::alert> a = sit.m_alerts.get();
+    std::unique_ptr<libed2k::alert> a = sit.m_alerts.get();
     libed2k::transfer_params_alert* aptr = static_cast<libed2k::transfer_params_alert*>(a.get());
     BOOST_REQUIRE(aptr);
     BOOST_CHECK(aptr->m_ec == libed2k::errors::make_error_code(libed2k::errors::file_params_making_was_cancelled));

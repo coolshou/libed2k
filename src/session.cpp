@@ -66,7 +66,7 @@ namespace libed2k
         return m_impl->find_peer_connection_handle(hash);
     }
 
-    std::auto_ptr<alert> session::pop_alert()
+    std::unique_ptr<alert> session::pop_alert()
     {
         boost::mutex::scoped_lock l(m_impl->m_mutex);
         return m_impl->pop_alert();

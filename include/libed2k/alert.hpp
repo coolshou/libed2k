@@ -101,7 +101,7 @@ namespace libed2k
         virtual char const* what() const = 0;
         virtual std::string message() const = 0;
         virtual int category() const = 0;
-        virtual std::auto_ptr<alert> clone() const = 0;
+        virtual std::unique_ptr<alert> clone() const = 0;
 
     private:
         ptime m_timestamp;
@@ -129,7 +129,7 @@ namespace libed2k
 
         bool post_alert(const alert& alert_);
         bool pending() const;
-        std::auto_ptr<alert> get();
+        std::unique_ptr<alert> get();
 
         template <class T>
         bool should_post() const
@@ -184,7 +184,7 @@ namespace libed2k
         template<class Handler
             , BOOST_PP_ENUM_PARAMS(LIBED2K_MAX_ALERT_TYPES, class T)>
         void handle_alert_dispatch(
-            const std::auto_ptr<alert>& alert_, const Handler& handler
+            const std::unique_ptr<alert>& alert_, const Handler& handler
             , const std::type_info& typeid_
             , T0*, BOOST_PP_ENUM_SHIFTED_BINARY_PARAMS(LIBED2K_MAX_ALERT_TYPES, T, *p))
         {
@@ -197,7 +197,7 @@ namespace libed2k
 
         template<class Handler>
         void handle_alert_dispatch(
-            const std::auto_ptr<alert>&
+            const std::unique_ptr<alert>&
             , const Handler&
             , const std::type_info&
             , BOOST_PP_ENUM_PARAMS(LIBED2K_MAX_ALERT_TYPES, void_* BOOST_PP_INTERCEPT))
@@ -211,7 +211,7 @@ namespace libed2k
     struct handle_alert
     {
         template<class Handler>
-        handle_alert(const std::auto_ptr<alert>& alert_
+        handle_alert(const std::unique_ptr<alert>& alert_
             , const Handler& handler)
         {
             #define ALERT_POINTER_TYPE(z, n, text) (BOOST_PP_CAT(T, n)*)0

@@ -20,9 +20,9 @@ namespace libed2k
         server_alert(const std::string& nm, const std::string& h, int p): name(nm), host(h), port(p){}
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new server_alert(*this));
+            return std::unique_ptr<alert>(new server_alert(*this));
         }
 
         virtual std::string message() const { return std::string("server alert"); }
@@ -37,7 +37,7 @@ namespace libed2k
     {
         server_name_resolved_alert(const std::string& name, const std::string& host, int port, const std::string endp) :
             server_alert(name, host, port), endpoint(endp){}
-        virtual std::auto_ptr<alert> clone() const { return std::auto_ptr<alert>(new server_name_resolved_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const { return std::unique_ptr<alert>(new server_name_resolved_alert(*this)); }
         virtual std::string message() const { return std::string("server name was resolved"); }
         std::string endpoint;
     };
@@ -56,7 +56,7 @@ namespace libed2k
                     aux_port(auxp)
         {}
 
-        virtual std::auto_ptr<alert> clone() const { return std::auto_ptr<alert>(new server_connection_initialized_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const { return std::unique_ptr<alert>(new server_connection_initialized_alert(*this)); }
         virtual std::string message() const { return std::string("handshake completed"); }
 
         boost::uint32_t client_id;
@@ -77,7 +77,7 @@ namespace libed2k
         {
         }
 
-        virtual std::auto_ptr<alert> clone() const { return std::auto_ptr<alert>(new server_status_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const { return std::unique_ptr<alert>(new server_status_alert(*this)); }
         virtual std::string message() const { return std::string("server status information"); }
 
         boost::uint32_t files_count;
@@ -102,7 +102,7 @@ namespace libed2k
         {
         }
 
-        virtual std::auto_ptr<alert> clone() const { return std::auto_ptr<alert>(new server_identity_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const { return std::unique_ptr<alert>(new server_identity_alert(*this)); }
 
         virtual std::string message() const { return std::string("server identity information"); }
 
@@ -122,7 +122,7 @@ namespace libed2k
                 server_message(msg){}
         virtual std::string message() const { return server_message; }
         virtual char const* what() const { return "incoming server message"; }
-        virtual std::auto_ptr<alert> clone() const { return (std::auto_ptr<alert>(new server_message_alert(*this))); }
+        virtual std::unique_ptr<alert> clone() const { return (std::unique_ptr<alert>(new server_message_alert(*this))); }
         std::string server_message;
     };
 
@@ -133,7 +133,7 @@ namespace libed2k
                 m_error(error){}
         virtual std::string message() const { return m_error.message(); }
         virtual char const* what() const { return "server connection closed"; }
-        virtual std::auto_ptr<alert> clone() const { return (std::auto_ptr<alert>(new server_connection_closed(*this))); }
+        virtual std::unique_ptr<alert> clone() const { return (std::unique_ptr<alert>(new server_connection_closed(*this))); }
         error_code m_error;
     };
 
@@ -146,8 +146,8 @@ namespace libed2k
         tcp::endpoint endpoint;
         error_code error;
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new listen_failed_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new listen_failed_alert(*this)); }
         virtual char const* what() const { return "listen failed"; }
         const static int static_category = alert::status_notification | alert::error_notification;
         virtual int category() const { return static_category; }
@@ -169,9 +169,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new peer_alert(*this));
+            return std::unique_ptr<alert>(new peer_alert(*this));
         }
 
         virtual std::string message() const { return std::string("peer alert"); }
@@ -197,9 +197,9 @@ namespace libed2k
         virtual std::string message() const { return "search result from string"; }
         virtual char const* what() const { return "search result from server"; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return (std::auto_ptr<alert>(new shared_files_alert(*this)));
+            return (std::unique_ptr<alert>(new shared_files_alert(*this)));
         }
 
         shared_files_list       m_files;
@@ -224,9 +224,9 @@ namespace libed2k
         virtual std::string message() const { return "search result from string"; }
         virtual char const* what() const { return "search result from server"; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return (std::auto_ptr<alert>(new shared_directories_alert(*this)));
+            return (std::unique_ptr<alert>(new shared_directories_alert(*this)));
         }
 
         std::vector<std::string>    m_dirs;
@@ -252,9 +252,9 @@ namespace libed2k
         virtual std::string message() const { return "search result for directory from peer"; }
         virtual char const* what() const { return "search result for directory from peer"; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return (std::auto_ptr<alert>(new shared_directory_files_alert(*this)));
+            return (std::unique_ptr<alert>(new shared_directory_files_alert(*this)));
         }
 
         std::string m_strDirectory;
@@ -277,9 +277,9 @@ namespace libed2k
         virtual std::string message() const { return "search result for directory from peer"; }
         virtual char const* what() const { return "search result for directory from peer"; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return (std::auto_ptr<alert>(new ismod_shared_directory_files_alert(*this)));
+            return (std::unique_ptr<alert>(new ismod_shared_directory_files_alert(*this)));
         }
 
         md4_hash m_dir_hash;
@@ -294,9 +294,9 @@ namespace libed2k
                                             m_active(bActive)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new peer_connected_alert(*this));
+            return std::unique_ptr<alert>(new peer_connected_alert(*this));
         }
 
         virtual std::string message() const { return std::string("peer connected alert"); }
@@ -312,9 +312,9 @@ namespace libed2k
                 const error_code& ec) : peer_alert(np, hash), m_ec(ec)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new peer_disconnected_alert(*this));
+            return std::unique_ptr<alert>(new peer_disconnected_alert(*this));
         }
 
         virtual std::string message() const { return std::string("peer disconnected alert"); }
@@ -328,9 +328,9 @@ namespace libed2k
             peer_alert(np, hash), m_strMessage(strMessage)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new peer_message_alert(*this));
+            return std::unique_ptr<alert>(new peer_message_alert(*this));
         }
 
         virtual std::string message() const { return std::string("peer message"); }
@@ -345,9 +345,9 @@ namespace libed2k
             peer_alert(np, hash), m_captcha(captcha)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new peer_captcha_request_alert(*this));
+            return std::unique_ptr<alert>(new peer_captcha_request_alert(*this));
         }
 
         virtual std::string message() const { return std::string("peer captcha request"); }
@@ -362,9 +362,9 @@ namespace libed2k
             peer_alert(np, hash), m_nResult(nResult)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new peer_captcha_result_alert(*this));
+            return std::unique_ptr<alert>(new peer_captcha_result_alert(*this));
         }
 
         virtual std::string message() const { return std::string("peer captcha result"); }
@@ -383,9 +383,9 @@ namespace libed2k
         virtual std::string message() const { return "shared files access denied"; }
         virtual char const* what() const { return "shared files access denied"; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return (std::auto_ptr<alert>(new shared_files_access_denied(*this)));
+            return (std::unique_ptr<alert>(new shared_files_access_denied(*this)));
         }
     };
 
@@ -397,9 +397,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new added_transfer_alert(*this));
+            return std::unique_ptr<alert>(new added_transfer_alert(*this));
         }
 
         virtual std::string message() const { return std::string("added transfer"); }
@@ -416,9 +416,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new paused_transfer_alert(*this));
+            return std::unique_ptr<alert>(new paused_transfer_alert(*this));
         }
 
         virtual std::string message() const { return std::string("paused transfer"); }
@@ -435,9 +435,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new resumed_transfer_alert(*this));
+            return std::unique_ptr<alert>(new resumed_transfer_alert(*this));
         }
 
         virtual std::string message() const { return std::string("resumed transfer"); }
@@ -454,9 +454,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new deleted_transfer_alert(*this));
+            return std::unique_ptr<alert>(new deleted_transfer_alert(*this));
         }
 
         virtual std::string message() const { return std::string("deleted transfer"); }
@@ -473,9 +473,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new finished_transfer_alert(*this));
+            return std::unique_ptr<alert>(new finished_transfer_alert(*this));
         }
 
         virtual std::string message() const { return std::string("transfer finished"); }
@@ -494,9 +494,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new file_renamed_alert(*this));
+            return std::unique_ptr<alert>(new file_renamed_alert(*this));
         }
 
         virtual std::string message() const { return std::string("renamed file"); }
@@ -515,9 +515,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new file_rename_failed_alert(*this));
+            return std::unique_ptr<alert>(new file_rename_failed_alert(*this));
         }
 
         virtual std::string message() const { return std::string("rename failed transfer"); }
@@ -536,9 +536,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new storage_moved_alert(*this));
+            return std::unique_ptr<alert>(new storage_moved_alert(*this));
         }
 
         virtual std::string message() const { return std::string("moved storage"); }
@@ -557,9 +557,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new storage_moved_failed_alert(*this));
+            return std::unique_ptr<alert>(new storage_moved_failed_alert(*this));
         }
 
         virtual std::string message() const { return std::string("move storage failed"); }
@@ -578,9 +578,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new deleted_file_alert(*this));
+            return std::unique_ptr<alert>(new deleted_file_alert(*this));
         }
 
         virtual std::string message() const { return std::string("deleted file"); }
@@ -599,9 +599,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new delete_failed_transfer_alert(*this));
+            return std::unique_ptr<alert>(new delete_failed_transfer_alert(*this));
         }
 
         virtual std::string message() const { return std::string("delete failed transfer"); }
@@ -622,9 +622,9 @@ namespace libed2k
 
         virtual int category() const { return static_category; }
 
-        virtual std::auto_ptr<alert> clone() const
+        virtual std::unique_ptr<alert> clone() const
         {
-            return std::auto_ptr<alert>(new state_changed_alert(*this));
+            return std::unique_ptr<alert>(new state_changed_alert(*this));
         }
 
         virtual std::string message() const { return std::string("changed transfer state"); }
@@ -657,8 +657,8 @@ namespace libed2k
 
         boost::shared_ptr<entry> resume_data;
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new save_resume_data_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new save_resume_data_alert(*this)); }
         virtual char const* what() const { return "save resume data complete"; }
         const static int static_category = alert::storage_notification;
         virtual int category() const { return static_category; }
@@ -680,8 +680,8 @@ namespace libed2k
 
         error_code error;
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new save_resume_data_failed_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new save_resume_data_failed_alert(*this)); }
         virtual char const* what() const { return "save resume data failed"; }
         const static int static_category = alert::storage_notification
             | alert::error_notification;
@@ -704,8 +704,8 @@ namespace libed2k
 
         error_code error;
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new fastresume_rejected_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new fastresume_rejected_alert(*this)); }
         virtual char const* what() const { return "resume data rejected"; }
         const static int static_category = alert::status_notification | alert::error_notification;
         virtual int category() const { return static_category; }
@@ -724,8 +724,8 @@ namespace libed2k
 
         address ip;
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new peer_blocked_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new peer_blocked_alert(*this)); }
         virtual char const* what() const { return "blocked peer"; }
         const static int static_category = alert::status_notification;
         virtual int category() const { return static_category; }
@@ -746,8 +746,8 @@ namespace libed2k
         std::string file;
         error_code error;
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new file_error_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new file_error_alert(*this)); }
         virtual char const* what() const { return "file error"; }
         const static int static_category = alert::status_notification
             | alert::error_notification
@@ -766,8 +766,8 @@ namespace libed2k
             : transfer_alert(h)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new transfer_checked_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new transfer_checked_alert(*this)); }
         virtual char const* what() const { return "transfer checked"; }
         const static int static_category = alert::status_notification;
         virtual int category() const { return static_category; }
@@ -785,8 +785,8 @@ namespace libed2k
 
         int index;
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new hash_failed_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new hash_failed_alert(*this)); }
         virtual char const* what() const { return "piece check failed"; }
         const static int static_category = alert::status_notification;
         virtual int category() const { return static_category; }
@@ -803,8 +803,8 @@ namespace libed2k
             m_atp(atp), m_ec(ec)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
-                { return std::auto_ptr<alert>(new transfer_params_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+                { return std::unique_ptr<alert>(new transfer_params_alert(*this)); }
 
         virtual char const* what() const { return "transfer parameters ready"; }
         virtual int category() const { return static_category; }
@@ -822,8 +822,8 @@ namespace libed2k
         portmap_log_alert(int t, std::string const& m) : map_type(t), msg(m)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new portmap_log_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new portmap_log_alert(*this)); }
 
         virtual char const* what() const { return "portmap log"; }
 
@@ -846,8 +846,8 @@ namespace libed2k
         portmap_alert(int i, int port, int t) : mapping(i), external_port(port), map_type(t)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new portmap_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new portmap_alert(*this)); }
 
         virtual char const* what() const { return "portmap"; }
 
@@ -873,8 +873,8 @@ namespace libed2k
         {
         }
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new portmap_error_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new portmap_error_alert(*this)); }
 
         virtual char const* what() const { return "portmap error"; }
         virtual int category() const { return static_category; }
@@ -897,8 +897,8 @@ namespace libed2k
         udp_error_alert(udp::endpoint const& ep, error_code const& ec): endpoint(ep), error(ec)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new udp_error_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new udp_error_alert(*this)); }
 
         virtual char const* what() const { return "UDP error"; }
         virtual int category() const { return static_category; }
@@ -918,8 +918,8 @@ namespace libed2k
     struct dht_started : alert {
         dht_started() {}
 
-        virtual std::auto_ptr<alert> clone() const {
-            return std::auto_ptr<alert>(new dht_started(*this));
+        virtual std::unique_ptr<alert> clone() const {
+            return std::unique_ptr<alert>(new dht_started(*this));
         }
 
         virtual char const* what() const { return "DHT started"; }
@@ -931,8 +931,8 @@ namespace libed2k
     struct dht_stopped : alert {
         dht_stopped() {}
 
-        virtual std::auto_ptr<alert> clone() const {
-            return std::auto_ptr<alert>(new dht_stopped(*this));
+        virtual std::unique_ptr<alert> clone() const {
+            return std::unique_ptr<alert>(new dht_stopped(*this));
         }
 
         virtual char const* what() const { return "DHT stopped"; }
@@ -944,8 +944,8 @@ namespace libed2k
     struct dht_traverse_finished : alert {
         dht_traverse_finished(const md4_hash& h) : hash(h) {}
 
-        virtual std::auto_ptr<alert> clone() const {
-            return std::auto_ptr<alert>(new dht_traverse_finished(*this));
+        virtual std::unique_ptr<alert> clone() const {
+            return std::unique_ptr<alert>(new dht_traverse_finished(*this));
         }
 
         virtual char const* what() const { return "DHT traverse finished"; }
@@ -964,8 +964,8 @@ namespace libed2k
                     , info_hash(info_hash_)
             {}
 
-            virtual std::auto_ptr<alert> clone() const
-            { return std::auto_ptr<alert>(new dht_announce_alert(*this)); }
+            virtual std::unique_ptr<alert> clone() const
+            { return std::unique_ptr<alert>(new dht_announce_alert(*this)); }
 
             virtual char const* what() const { return "DHT announce"; }
             virtual int category() const { return static_category; }
@@ -989,8 +989,8 @@ namespace libed2k
                     : info_hash(info_hash_)
             {}
 
-            virtual std::auto_ptr<alert> clone() const
-            { return std::auto_ptr<alert>(new dht_get_peers_alert(*this)); }
+            virtual std::unique_ptr<alert> clone() const
+            { return std::unique_ptr<alert>(new dht_get_peers_alert(*this)); }
 
             virtual char const* what() const { return "DHT get peers"; }
             virtual int category() const { return static_category; }
@@ -1012,8 +1012,8 @@ namespace libed2k
                     : external_address(ip)
         {}
 
-        virtual std::auto_ptr<alert> clone() const
-        { return std::auto_ptr<alert>(new external_ip_alert(*this)); }
+        virtual std::unique_ptr<alert> clone() const
+        { return std::unique_ptr<alert>(new external_ip_alert(*this)); }
 
         virtual char const* what() const { return "DHT get peers"; }
         virtual int category() const { return static_category; }
@@ -1035,8 +1035,8 @@ namespace libed2k
             : m_hash(h), m_entries(entries)
         {}
 
-        virtual std::auto_ptr<alert> clone() const {
-            return std::auto_ptr<alert>(new dht_keyword_search_result_alert(*this));
+        virtual std::unique_ptr<alert> clone() const {
+            return std::unique_ptr<alert>(new dht_keyword_search_result_alert(*this));
         }
 
         virtual char const* what() const { return "DHT search ketyword result"; }

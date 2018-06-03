@@ -17,14 +17,14 @@
 
 BOOST_AUTO_TEST_SUITE(test_alerts)
 
-std::auto_ptr<libed2k::alert> pop_alert(libed2k::alert_manager& al)
+std::unique_ptr<libed2k::alert> pop_alert(libed2k::alert_manager& al)
 {
     if (al.pending())
     {
         return al.get();
     }
 
-    return std::auto_ptr<libed2k::alert>(0);
+    return std::unique_ptr<libed2k::alert>(0);
 }
 
 bool bGlobal = false;
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(test_alerts)
     al.post_alert(libed2k::server_connection_initialized_alert("server", "host", 2, 2,2,2));
     al.post_alert(libed2k::server_connection_initialized_alert("server", "host", 3, 3,2,2));
 
-    std::auto_ptr<libed2k::alert> a;
+    std::unique_ptr<libed2k::alert> a;
 
     a = pop_alert(al);
     unsigned int nCount = 0;

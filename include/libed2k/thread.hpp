@@ -44,7 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <kernel/OS.h>
 #endif
 
-#include <memory> // for auto_ptr required by asio
+#include <memory> // for unique_ptr required by asio
 
 #include <boost/asio/detail/thread.hpp>
 #include <boost/asio/detail/mutex.hpp>

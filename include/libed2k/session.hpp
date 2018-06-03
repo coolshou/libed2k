@@ -68,7 +68,7 @@ namespace libed2k {
         peer_connection_handle find_peer_connection(const net_identifier& np) const;
         peer_connection_handle find_peer_connection(const md4_hash& hash) const;
 
-        std::auto_ptr<alert> pop_alert();
+        std::unique_ptr<alert> pop_alert();
         size_t set_alert_queue_size_limit(size_t queue_size_limit_);
         void set_alert_mask(boost::uint32_t m);
         alert const* wait_for_alert(time_duration max_wait);

@@ -221,7 +221,7 @@ void alerts_reader(const boost::system::error_code& ec, boost::asio::deadline_ti
         return;
     }
 
-    std::auto_ptr<alert> a = ps->pop_alert();
+    std::unique_ptr<alert> a = ps->pop_alert();
 
     while(a.get())
     {

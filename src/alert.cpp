@@ -109,7 +109,7 @@ namespace libed2k
     void dispatch_alert(boost::function<void(alert const&)> dispatcher
         , alert* alert_)
     {
-        std::auto_ptr<alert> holder(alert_);
+        std::unique_ptr<alert> holder(alert_);
         dispatcher(*alert_);
     }
 
@@ -130,7 +130,7 @@ namespace libed2k
         return true;
     }
 
-    std::auto_ptr<alert> alert_manager::get()
+    std::unique_ptr<alert> alert_manager::get()
     {
         boost::mutex::scoped_lock lock(m_mutex);
 
@@ -138,7 +138,7 @@ namespace libed2k
 
         alert* result = m_alerts.front();
         m_alerts.pop();
-        return std::auto_ptr<alert>(result);
+        return std::unique_ptr<alert>(result);
     }
 
     bool alert_manager::pending() const
