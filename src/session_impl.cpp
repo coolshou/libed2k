@@ -103,7 +103,7 @@ std::unique_ptr<alert> session_impl_base::pop_alert()
         return m_alerts.get();
     }
 
-    return std::unique_ptr<alert>(0);
+    return std::unique_ptr<alert>(nullptr);
 }
 
 void session_impl_base::set_alert_dispatch(boost::function<void(alert const&)> const& fun)
